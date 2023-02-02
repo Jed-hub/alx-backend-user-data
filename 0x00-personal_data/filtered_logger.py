@@ -20,9 +20,6 @@ def get_logger() -> logging.Logger:
     log.propagate = False
 
     stream_handler: logging.StreamHandler = logging.StreamHandler()
-    #stream_handler.setLevel(logging.INFO)
-    #formatter = logging.Formatter((RedactingFormatter(fields=PII_FIELDS)))
-    #stream_handler.formatter(formatter)
     stream_handler.setFormatter(RedactingFormatter(list(PII_FIELDS)))
 
     log.addHandler(stream_handler)
