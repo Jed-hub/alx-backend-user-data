@@ -26,6 +26,7 @@ def get_logger() -> logging.Logger:
 
     return log
 
+
 def get_db() -> mysql.connector.connection.MySQLConnection:
     """
     Returns a connector to the database
