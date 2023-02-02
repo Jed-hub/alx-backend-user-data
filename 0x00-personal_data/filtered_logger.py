@@ -56,5 +56,6 @@ class RedactingFormatter(logging.Formatter):
                                   record.getMessage(), self.SEPARATOR)
         return super(RedactingFormatter, self).format(record)
 
+
 if __name__ == '__main__':
     main()
