@@ -44,7 +44,7 @@ class RedactingFormatter(logging.Formatter):
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
     SEPARATOR = ";"
 
-    def __init__(self, fields):
+    def __init__(self, fields: List[str]):
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields
 
@@ -54,4 +54,7 @@ class RedactingFormatter(logging.Formatter):
         """
         record.msg = filter_datum(self.fields, self.REDACTION,
                                   record.getMessage(), self.SEPARATOR)
-        return (super(RedactingFormatter, self).format(record))
+        return super(RedactingFormatter, self).format(record)
+
+if __name__ == '__main__':
+    main()
