@@ -6,6 +6,24 @@ from typing import List
 from re import sub
 
 
+def get_logger() -> logging.Logger:
+    """
+    Returns the function overloaded to make
+    a new log with all items
+    """
+    log: logging.Logger = logging.getLogger('user_data')
+    log.propagate = False
+
+    stream_handler: logging.StreamHandler = logging.StreamHandler()
+    stream_handler.setLevel(logging.INFO)
+    formatter = logging.Formatter((RedactingFormatter(fields=PII_FIELDS)))
+    stream_handler.formatter(formatter)
+
+    log.addHandler(stream_handler)
+
+    return log
+
+
 def filter_datum(fields: List, redaction: str, message: str,
                  separator: str) -> str:
     """
@@ -26,7 +44,7 @@ class RedactingFormatter(logging.Formatter):
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
     SEPARATOR = ";"
 
-    def __init__(self):
+    def __init__(self, fields):
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields
 
@@ -35,5 +53,5 @@ class RedactingFormatter(logging.Formatter):
         Filter values in incomming log records
         """
         record.msg = filter_datum(self.fields, self.REDACTION,
-                                  record.getMessage(), self.SEPERATOR)
+                                  record.getMessage(), self.SEPARATOR)
         return (super(RedactingFormatter, self).format(record))
