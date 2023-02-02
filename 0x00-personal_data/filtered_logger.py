@@ -3,7 +3,7 @@
 import os
 import logging
 from typing import List
-from re import sub
+import re
 
 
 def get_logger() -> logging.Logger:
@@ -30,7 +30,7 @@ def filter_datum(fields: List, redaction: str, message: str,
     Returns the log message obfuscated
     """
     for field in fields:
-        message = sub(f'{field}=.+?{separator}',
+        message = re.sub(f'{field}=.+?{separator}',
                       f'{field}={redaction}{separator}', message)
 
     return message
