@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 """ Filtered logger module """
 import os
-import logging
-from typing import List
 import re
+import logging
+import mysql.connector
+from typing import List
+
+
+PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
 
 def get_logger() -> logging.Logger:
@@ -12,12 +16,14 @@ def get_logger() -> logging.Logger:
     a new log with all items
     """
     log: logging.Logger = logging.getLogger('user_data')
+    log.setLevel(logging.INFO)
     log.propagate = False
 
     stream_handler: logging.StreamHandler = logging.StreamHandler()
-    stream_handler.setLevel(logging.INFO)
-    formatter = logging.Formatter((RedactingFormatter(fields=PII_FIELDS)))
-    stream_handler.formatter(formatter)
+    #stream_handler.setLevel(logging.INFO)
+    #formatter = logging.Formatter((RedactingFormatter(fields=PII_FIELDS)))
+    #stream_handler.formatter(formatter)
+    stream_handler.setFormatter(RedactingFormatter(list(PII_FIELDS)))
 
     log.addHandler(stream_handler)
 
