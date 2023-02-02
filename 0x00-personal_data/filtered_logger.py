@@ -58,16 +58,19 @@ def main():
     and retrieves all rows in the users table
     and displays each row under a filtered format
     """
-    db = get_db()
+    db: mysql.connector.connection.MySQLConnection = get_db()
     cursor = db.cursor()
     cursor.execute("SELECT * FROM users;")
-    field_names = [i[0] for i in cursor.description]
+    fields_names: Tuple = (i[0] for i in cursor.description)
 
-    logger = get_logger()
+    logger: logging.Logger = get_logger()
 
     for row in cursor:
-        str_row = ''.join(f'{f}={str(r)}; ' for r, f in zip(row, field_names))
-        logger.info(str_row.strip())
+        for row in cursor:
+            str_row: str = ''
+            for key, value in zip(fields_names, row):
+                str_row = ''.join(f'{key}={str(value)};')
+            logger.info(str_row)
 
     cursor.close()
     db.close()
