@@ -4,7 +4,7 @@ import os
 import re
 import logging
 import mysql.connector
-from typing import List
+from typing import List, Tuple
 
 
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
@@ -60,8 +60,8 @@ def main():
     """
     db = get_db()
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM USERS;")
-    fields_names = [i[0] for i in cursor.description]
+    cursor.execute("SELECT * FROM users;")
+    field_names = [i[0] for i in cursor.description]
 
     logger = get_logger()
 
