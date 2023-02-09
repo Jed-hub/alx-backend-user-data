@@ -40,7 +40,7 @@ def login():
     session_id = auth.create_session(user.id)
 
     _my_session_id = getenv('SESSION_NAME')
-    response = jsonify(user.to_json)
+    response = jsonify(user.to_json())
     response.set_cookie(_my_session_id, session_id)
 
     return response
