@@ -59,7 +59,7 @@ class SessionAuth(Auth):
             return False
 
         try:
-            del user_id
+            del uself.user_id_by_session_id[session_id]
         except Exception:
             pass
 
