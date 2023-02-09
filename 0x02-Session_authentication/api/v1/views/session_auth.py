@@ -2,7 +2,7 @@
 """ Session auth view
 """
 from api.v1.views import app_views
-from flask import abort, jsonify, request, make_response
+from flask import abort, jsonify, request
 from os import getenv
 from typing import List
 from models.user import User
@@ -13,16 +13,21 @@ def login():
     """ Login user
     """
     email = request.form.get('email')
-    pwd = request.form.get('password')
 
     if not email:
-        return make_response(jsonify({"error": "email missing"}), 400)
+        return jsonify({"error": "email missing"}), 400
+
+    pwd = request.form.get('password')
+
     if not pwd:
-        return make_response(jsonify({"error": "password missing"}), 400)
+        return jsonify({"error": "password missing"}), 400
 
-    exist_users = User.search({"email": email})
+    try:
+        exist_users = User.search({'email': email})
+    except Exception:
+        return jsonify({"error": "no user found for this email"}), 404
 
-    if len(exist_users) == 0:
+    if not exist_users:
         return jsonify({"error": "no user found for this email"}), 404
 
     for user in exist_users:
@@ -31,12 +36,11 @@ def login():
 
     from api.v1.app import auth
 
-
     user = exist_users[0]
     session_id = auth.create_session(user.id)
 
     _my_session_id = getenv('SESSION_NAME')
-    response = make_response(user.to_json)
+    response = jsonify(user.to_json)
     response.set_cookie(_my_session_id, session_id)
 
     return response
