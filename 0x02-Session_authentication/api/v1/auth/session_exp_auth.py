@@ -51,7 +51,7 @@ class SessionExpAuth(SessionAuth):
             return session_dictionary.get('user_id', None)
 
         created_by = session_dictionary.get('created_at', None)
-        if created_at is None:
+        if created_by is None:
             return None
 
         expired_session = created_by + timedelta(seconds=self.session_duration)
