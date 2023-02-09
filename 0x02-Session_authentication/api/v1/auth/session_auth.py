@@ -53,7 +53,7 @@ class SessionAuth(Auth):
         if session_id is None:
             return False
 
-        user_id = self.user_id_by_session_id(session_id)
+        user_id = self.user_id_by_session_id[session_id]
 
         if not user_id:
             return False
