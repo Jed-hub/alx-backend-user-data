@@ -31,6 +31,7 @@ def users() -> str:
 
     return jsonify({"email": email, "message": "user created"})
 
+
 @app.route('/sessions', methods=['POST'])
 def login():
     """ Creates a session for the user and stores it the sessionID
