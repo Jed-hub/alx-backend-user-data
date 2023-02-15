@@ -101,7 +101,7 @@ def get_reset_password_token() -> str:
 
     token = AUTH.get_reset_password_token(email)
 
-    return jsonify({"email": email, "reset_token": token})
+    return jsonify({"email": email, "reset_token": token}), 200
 
 
 if __name__ == "__main__":
