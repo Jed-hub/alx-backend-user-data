@@ -18,7 +18,7 @@ class DB:
     def __init__(self) -> None:
         """Initialize a new DB instance
         """
-        self._engine = create_engine("sqlite:///a.db", echo=True)
+        self._engine = create_engine("sqlite:///a.db", echo=False)
         Base.metadata.drop_all(self._engine)
         Base.metadata.create_all(self._engine)
         self.__session = None
@@ -36,11 +36,11 @@ class DB:
         """ Saves the user to the database and
         Returns a User object
         """
-        user = User(email=email, hashed_password=hashed_password)
-        self._session.add(user)
+        new_user = User(email=email, hashed_password=hashed_password)
+        self._session.add(new_user)
         self._session.commit()
 
-        return user
+        return new_user
 
     def find_user_by(self, **kwargs) -> User:
         """ Returns the first row found in the users table
@@ -49,10 +49,10 @@ class DB:
         if not kwargs:
             raise InvalidRequestError
 
-        column_names = User.__table__.columns.keys()
+        column_keys = User.__table__.columns.keys()
 
         for key in kwargs.keys():
-            if key not in column_names:
+            if key not in column_keys:
                 raise InvalidRequestError
 
         user = self._session.query(User).filter_by(**kwargs).first()
