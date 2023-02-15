@@ -13,6 +13,7 @@ def hello() -> str:
     """
     return jsonify({"message": "Bienvenue"})
 
+
 @app.route('/users', methods=['POST'])
 def users() -> str:
     """
