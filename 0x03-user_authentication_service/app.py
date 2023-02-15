@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """ app module"""
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort, redirect
 from auth import Auth
 
 app = Flask(__name__)
@@ -70,7 +70,7 @@ def logout():
 
     AUTH.destroy_session(user.id)
 
-    return redirect('/', code=302)
+    return redirect('/')
 
 
 if __name__ == "__main__":
