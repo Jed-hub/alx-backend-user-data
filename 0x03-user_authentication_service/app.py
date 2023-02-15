@@ -99,7 +99,10 @@ def get_reset_password_token() -> str:
     except KeyError:
         abort(403)
 
-    token = AUTH.get_reset_password_token(email)
+    try:
+        token = AUTH.get_reset_password_token(email)
+    except ValueError:
+        abort(403)
 
     return jsonify({"email": email, "reset_token": token}), 200
 
