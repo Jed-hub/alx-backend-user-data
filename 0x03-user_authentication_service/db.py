@@ -67,6 +67,9 @@ class DB:
         as passed in the method's argument, then commit the changes
         to the database
         """
+        if not kwargs:
+            return None
+
         user = self.find_user_by(id=user_id)
 
         column_names = User.__table__.columns.keys()
